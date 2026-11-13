@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MyCoolPage</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            color: #222;
+            overflow-x: hidden;
+        }
+
+        /* -------------------------
+           NORMAL PAGE
+        ------------------------- */
+
+        #normalPage {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: 1s;
+        }
+
+        .normal-box {
+            text-align: center;
+            background: white;
+            padding: 50px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .normal-box h1 {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .normal-box p {
+            color: #777;
+            margin-bottom: 30px;
+        }
+
+        #secretButton {
+            border: none;
+            background: #222;
+            color: white;
+            padding: 13px 25px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #secretButton:hover {
+            background: #444;
+        }
+
+
+        /* -------------------------
+           FNAF REVEAL
+        ------------------------- */
+
+        #fnafPage {
+            display: none;
+            position: relative;
+            min-height: 100vh;
+            width: 100%;
+            overflow: hidden;
+
+            background:
+                radial-gradient(circle at center, #292929 0%, #090909 55%, #000000 100%);
+
+            color: white;
+            text-align: center;
+        }
+
+        #fnafPage.show {
+            display: block;
+            animation: fadeIn 1.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .reveal-content {
+            position: relative;
+            z-index: 10;
+
+            min-height: 100vh;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .small-text {
+            font-size: 18px;
+            letter-spacing: 5px;
+            color: #aaa;
+            margin-bottom: 20px;
+
+            animation: flicker 2s infinite;
+        }
+
+        .main-title {
+            font-size: clamp(45px, 8vw, 100px);
+            font-weight: 900;
+            letter-spacing: 3px;
+
+            text-shadow:
+                0 0 10px #fff,
+                0 0 25px #777,
+                0 0 50px #444;
+
+            animation: titleAppear 1.5s ease;
+        }
+
+        @keyframes titleAppear {
+            from {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .subtitle {
+            margin-top: 20px;
+            font-size: 20px;
+            color: #bbb;
+        }
+
+        .movie-text {
+            margin-top: 45px;
+            font-size: 28px;
+            font-weight: bold;
+            letter-spacing: 2px;
+
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+
+            50% {
+                transform: scale(1.05);
+                opacity: 1;
+            }
+        }
+
+
+        /* -------------------------
+           FLOATING CHARACTERS
+        ------------------------- */
+
+        .character {
+            position: absolute;
+            z-index: 5;
+
+            font-size: 100px;
+
+            filter:
+                grayscale(100%)
+                drop-shadow(0 0 15px rgba(255,255,255,0.15));
+
+            opacity: 0.85;
+
+            user-select: none;
+            pointer-events: none;
+        }
+
+        .freddy {
+            top: 8%;
+            left: 8%;
+
+            animation:
+                float1 5s ease-in-out infinite,
+                spinSlow 12s linear infinite;
+        }
+
+        .bonnie {
+            top: 15%;
+            right: 8%;
+
+            animation: float2 6s ease-in-out infinite;
+        }
+
+        .chica {
+            bottom: 8%;
+            left: 12%;
+
+            animation: float3 5s ease-in-out infinite;
+        }
+
+        .foxy {
+            bottom: 10%;
+            right: 10%;
+
+            animation: float4 4.5s ease-in-out infinite;
+        }
+
+        @keyframes float1 {
+            0%, 100% {
+                transform: translateY(0) rotate(-5deg);
+            }
+
+            50% {
+                transform: translateY(-35px) rotate(5deg);
+            }
+        }
+
+        @keyframes float2 {
+            0%, 100% {
+                transform: translateY(0) rotate(5deg);
+            }
+
+            50% {
+                transform: translateY(30px) rotate(-5deg);
+            }
+        }
+
+        @keyframes float3 {
+            0%, 100% {
+                transform: translateY(0) rotate(5deg);
+            }
+
+            50% {
+                transform: translateY(-25px) rotate(-5deg);
+            }
+        }
+
+        @keyframes float4 {
+            0%, 100% {
+                transform: translateY(0) rotate(-5deg);
+            }
+
+            50% {
+                transform: translateY(40px) rotate(5deg);
+            }
+        }
+
+        @keyframes spinSlow {
+            from {
+                rotate: -5deg;
+            }
+
+            to {
+                rotate: 5deg;
+            }
+        }
+
+
+        /* -------------------------
+           EXTRA FLOATING SYMBOLS
+        ------------------------- */
+
+        .star {
+            position: absolute;
+            color: white;
+            opacity: 0.4;
+            font-size: 20px;
+
+            animation: starFloat 4s ease-in-out infinite;
+        }
+
+        .star1 {
+            top: 20%;
+            left: 35%;
+        }
+
+        .star2 {
+            top: 70%;
+            left: 40%;
+            animation-delay: 1s;
+        }
+
+        .star3 {
+            top: 30%;
+            right: 30%;
+            animation-delay: 2s;
+        }
+
+        .star4 {
+            bottom: 25%;
+            right: 35%;
+            animation-delay: 0.5s;
+        }
+
+        @keyframes starFloat {
+            0%, 100% {
+                transform: translateY(0);
+                opacity: 0.2;
+            }
+
+            50% {
+                transform: translateY(-20px);
+                opacity: 0.7;
+            }
+        }
+
+
+        /* -------------------------
+           DARK VIGNETTE
+        ------------------------- */
+
+        .vignette {
+            position: absolute;
+            inset: 0;
+
+            background:
+                radial-gradient(
+                    circle,
+                    transparent 20%,
+                    rgba(0,0,0,0.25) 55%,
+                    rgba(0,0,0,0.8) 100%
+                );
+
+            pointer-events: none;
+            z-index: 8;
+        }
+
+
+        /* -------------------------
+           RESPONSIVE
+        ------------------------- */
+
+        @media (max-width: 600px) {
+
+            .normal-box {
+                width: 90%;
+                padding: 35px 20px;
+            }
+
+            .character {
+                font-size: 65px;
+            }
+
+            .small-text {
+                font-size: 13px;
+            }
+
+            .subtitle {
+                font-size: 16px;
+            }
+
+            .movie-text {
+                font-size: 20px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+
+    <!-- ==========================
+         NORMAL PAGE
+    =========================== -->
+
+    <div id="normalPage">
+
+        <div class="normal-box">
+
+            <h1>MyCoolPage</h1>
+
+            <p>
+                Welcome to my very cool and completely normal webpage.
+            </p>
+
+            <button id="secretButton">
+                Click here
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==========================
+         FNAF PAGE
+    =========================== -->
+
+    <div id="fnafPage">
+
+        <!-- Floating characters -->
+        <div class="character freddy">🐻</div>
+        <div class="character bonnie">🐰</div>
+        <div class="character chica">🐤</div>
+        <div class="character foxy">🦊</div>
+
+        <!-- Extra floating things -->
+        <div class="star star1">✦</div>
+        <div class="star star2">✧</div>
+        <div class="star star3">✦</div>
+        <div class="star star4">✧</div>
+
+        <!-- Dark overlay -->
+        <div class="vignette"></div>
+
+        <!-- Main reveal -->
+        <div class="reveal-content">
+
+            <div class="small-text">
+                SURPRISE...
+            </div>
+
+            <h1 class="main-title">
+                LET'S WATCH
+            </h1>
+
+            <div class="subtitle">
+                the Five Nights at Freddy's movie
+            </div>
+
+            <div class="movie-text">
+                🍿 🎬 FNAF NIGHT 🎬 🍿
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==========================
+         JAVASCRIPT
+    =========================== -->
+
+    <script>
+
+        const button = document.getElementById("secretButton");
+        const normalPage = document.getElementById("normalPage");
+        const fnafPage = document.getElementById("fnafPage");
+
+
+        button.addEventListener("click", function () {
+
+            // Hide the normal page
+            normalPage.style.display = "none";
+
+            // Show the FNAF page
+            fnafPage.classList.add("show");
+
+        });
+
+    </script>
+
+</body>
+</html>
